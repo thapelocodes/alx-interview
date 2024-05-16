@@ -1,19 +1,17 @@
 #!/usr/bin/python3
-
-"""Script that reads stdin line by line and computes metrics"""
-
+""" reads stdin line by line and computes metrics """
 import sys
 
 
-def printsts(dic, size):
-    """ WWPrints information """
+def log_status(dic, size):
+    """ logs metrics by printing to stdout """
     print("File size: {:d}".format(size))
     for i in sorted(dic.keys()):
         if dic[i] != 0:
             print("{}: {:d}".format(i, dic[i]))
 
 
-sts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+status = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
        "404": 0, "405": 0, "500": 0}
 
 count = 0
@@ -22,24 +20,24 @@ size = 0
 try:
     for line in sys.stdin:
         if count != 0 and count % 10 == 0:
-            printsts(sts, size)
+            log_status(status, size)
 
-        stlist = line.split()
+        status_list = line.split()
         count += 1
 
         try:
-            size += int(stlist[-1])
+            size += int(status_list[-1])
         except:
             pass
 
         try:
-            if stlist[-2] in sts:
-                sts[stlist[-2]] += 1
+            if status_list[-2] in status:
+                status[status_list[-2]] += 1
         except:
             pass
-    printsts(sts, size)
+    log_status(status, size)
 
 
 except KeyboardInterrupt:
-    printsts(sts, size)
+    log_status(status, size)
     raise
