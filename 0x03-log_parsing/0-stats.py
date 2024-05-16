@@ -2,48 +2,44 @@
 """
 solves the log parsing problem
 """
-import re
 import sys
 
 
-def ret(log: dict) -> None:
-    """
-    function to display stats
-    """
-    print("File size: {}".format(log["file_size"]))
-    for code in sorted(log["code_frequency"]):
-        if log["code_frequency"][code]:
-            print("{}: {}".format(code, log["code_frequency"][code]))
+def log_status(dic, size):
+    """ function to print logs """
+    print("File size: {:d}".format(size))
+    for i in sorted(dic.keys()):
+        if dic[i] != 0:
+            print("{}: {:d}".format(i, dic[i]))
 
 
-if __name__ == "__main__":
-    regex = re.compile(
-    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} - \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d+\] "GET /projects/260 HTTP/1.1" (.{3}) (\d+)')  # nopep8
+status = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+       "404": 0, "405": 0, "500": 0}
 
-    count = 0
-    log = {}
-    log["file_size"] = 0
-    log["code_frequency"] = {
-        str(code): 0 for code in [
-            200, 301, 400, 401, 403, 404, 405, 500]}
+count = 0
+size = 0
 
-    try:
-        for line in sys.stdin:
-            line = line.strip()
-            match = regex.fullmatch(line)
-            if (match):
-                count += 1
-                code = match.group(1)
-                size = int(match.group(2))
+try:
+    for line in sys.stdin:
+        if count != 0 and count % 10 == 0:
+            log_status(sts, size)
 
-                # File size
-                log["file_size"] += size
+        status_li = line.split()
+        count += 1
 
-                # status code
-                if (code.isdecimal()):
-                    log["code_frequency"][code] += 1
+        try:
+            size += int(status_li[-1])
+        except:
+            pass
 
-                if (count % 10 == 0):
-                    ret(log)
-    finally:
-        ret(log)
+        try:
+            if status_li[-2] in status:
+                status[status_li[-2]] += 1
+        except:
+            pass
+    log_status(status, size)
+
+
+except KeyboardInterrupt:
+    log_status(status, size)
+    raise
