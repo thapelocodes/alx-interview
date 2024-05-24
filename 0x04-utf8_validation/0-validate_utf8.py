@@ -17,20 +17,20 @@ def validUTF8(data):
             while mask_byte & d:
                 byte_size += 1
                 mask_byte = mask_byte >> 1
-            
+
             if byte_size == 0:
                 continue
-            
+
             if byte_size == 1 or byte_size > 4:
                 return False
-            
+
         else:
             if not (d & mask_1 and not (d & mask_2)):
                 return False
-        
+
         byte_size -= 1
 
     if byte_size == 0:
         return True
-    
+
     return False
