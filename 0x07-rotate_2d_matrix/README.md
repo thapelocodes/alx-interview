@@ -37,3 +37,5 @@ For this project, the task is to implement an in-place algorithm to rotate an n 
 ## Additional Resources
 
 - [Mock Technical Interview](https://www.youtube.com/watch?v=yM9Xbi-MigE)
+
+In this project it was found that the best solution is to first transpose the matrix in-place then reverse each row of the transposed matrix. The module `numpy` could have been used but it was out of the scope of this project.
