@@ -1,17 +1,23 @@
 #!/usr/bin/python3
-""" Making Change """
+''' Making Change '''
 
 
 def makeChange(coins, total):
-    """ Finds the least number of coins that add up to a given sum. """
+    ''' Finds the least number of coins that add up to a given sum. '''
     if total <= 0:
         return 0
     
-    dp = [float("inf")] * (total + 1)
-    dp[0] = 0
+    coins.sort(reverse=True)
+    counter = 0
     
     for coin in coins:
-        for i in range(coin, total + 1):
-            dp[i] = min(dp[i], dp[i - coin] + 1)
+        while(total >= coin):
+            total -= coin
+            counter += 1
+
+    if total == 0:
+        return counter
+    total += coin
+    counter -= 1
     
-    return dp[total] if dp[total] != float("inf") else -1
+    return -1
