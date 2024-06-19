@@ -1,19 +1,27 @@
 #!/usr/bin/python3
-""" Making changes """
+""" Making Change """
 
 
 def makeChange(coins, total):
-    """ Finds the least number of coins that add up to a given sum. """
+    """ Generate changes required to reach total.
+
+    Args:
+        coins (list): List of coin denominations available.
+        total (int): Total amount needed.
+        
+    Returns:
+        int: Minimum number of coins needed to make the total, or -1 if not possible.
+    """
     if total <= 0:
         return 0
     
     coins.sort(reverse=True)
-    temp = 0
+    counter = 0
     for coin in coins:
         while total >= coin:
             total -= coin
-            temp += 1
+            counter += 1
         if total == 0:
-            return temp
+            return counter
     
     return -1
