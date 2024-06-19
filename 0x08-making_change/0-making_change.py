@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-"""Finds the least number of coins that add up to a given sum."""
+""" Making Change """
 
 
 def makeChange(coins, total):
+    """ Finds the least number of coins that add up to a given sum. """
     if total <= 0:
         return 0
     
