@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Prime Game """
+import random
 
 
 def isWinner(x, nums):
@@ -22,11 +23,14 @@ def isWinner(x, nums):
             return 'Ben'
         turns = 0  # 0 for Maria's turn, 1 for Ben's turn
         available = [True] * (n + 1)
-        for prime in primes:
-            if available[prime]:
-                for multiple in range(prime, n + 1, prime):
-                    available[multiple] = False
-                turns += 1
+        while any(available[p] for p in primes):
+            available_primes = [p for p in primes if available[p]]
+            if not available_primes:
+                break
+            chosen_prime = random.choice(available_primes)
+            for multiple in range(chosen_prime, n + 1, chosen_prime):
+                available[multiple] = False
+            turns += 1
         return 'Maria' if turns % 2 == 1 else 'Ben'
 
     maria_wins = 0
